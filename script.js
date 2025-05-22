@@ -1,20 +1,9 @@
 // Functions
 function getComputerChoice() {
-   let rock = Math.random();
-   let paper = Math.random();
-   
-   if (rock < 0.33)
-    return "rock";
-   else if (0.33 <= paper <= 0.66)
-    return "paper";
-   else 
-    return "scissors";
-}
-
-// Assuming the user makes the correct choices
-function getHumanChoice() {
-    let choice = String(prompt("Make a choice: "));
-    return choice;
+    const rand = Math.random();
+    if (rand < 0.33) return "rock";
+    else if (rand < 0.66) return "paper";
+    else return "scissors";
 }
 
 function playRound(humanChoice, computerChoice) {
@@ -30,23 +19,42 @@ function playRound(humanChoice, computerChoice) {
         (player === "scissors" && computer === "paper") ||
         (player === "paper" && computer === "rock")
     ){
-        return console.log("Player wins!"), humanScore++;
+        humanScore++;
+        humanScoreSpan.textContent = humanScore;
     } else {
-        return console.log("Computer wins!"), computerScore++;
+        computerScore++;
+        computerScoreSpan.textContent = computerScore;
+    }
+    
+    console.log(`Player chose ${player}, computer chose ${computer}`);
+    checkWinner();
+}
+
+function checkWinner() {
+    if (humanScore === 5) {
+        alert("Player wins!");
+    }
+    else if (computerScore === 5) {
+        alert("Computer wins!")
     }
 }
 
-function playGame() {
-    for (i = 0; i < 5; i++) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-    }
-    console.log("Player Score: " + humanScore + "\n")
-    console.log("Computer Score: " + computerScore + "\n")
-}
 // Main
 let humanScore = 0;
 let computerScore = 0;
 
-playGame();
+let humanScoreSpan = document.querySelector("#human-score");
+let computerScoreSpan = document.querySelector("#computer-score");
+
+
+
+const buttons = document.querySelectorAll("button");
+
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        let humanSelection = button.id;
+        let computerSelection = getComputerChoice();
+        playRound(humanSelection, computerSelection);
+    });
+});
+
